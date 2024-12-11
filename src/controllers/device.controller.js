@@ -1,30 +1,32 @@
 import Device from "@/models/device";
 import QRCode from "qrcode";
 
+import {prisma} from "../database/prisma"
+
 class DeviceController {
   // Método para obter todos os dispositivos
   async all(req) {
-    try {
-      const devices = await Device.find({});
+    // try {
+      // const devices = await Device.find({});
+      const devices = await prisma.device.findMany();
       return new Response(JSON.stringify(devices), { status: 200 });
-    } catch (error) {
-      console.error(error);
-      return new Response(JSON.stringify({ error: 'Error retrieving devices' }), { status: 500 });
-    }
+    // } catch (error) {
+    //   // console.log(error);
+    //   return new Response(JSON.stringify({ error: 'Error retrieving devices' }), { status: 500 });
+    // }
   }
 
   // Método para obter um dispositivo específico
   async get(id) {
-    try {
-      const device = await Device.findById(id);
-      if (!device) {
-        return new Response(JSON.stringify({ error: 'Device not found' }), { status: 404 });
+    const device = await prisma.device.findUnique({
+      where:{
+        id
       }
-      return new Response(JSON.stringify(device), { status: 200 });
-    } catch (error) {
-      console.error(error);
-      return new Response(JSON.stringify({ error: 'Error retrieving device' }), { status: 500 });
+    });
+    if (!device) {
+      return new Response(JSON.stringify({ error: 'Device not found' }), { status: 404 });
     }
+    return new Response(JSON.stringify(device), { status: 200 });
   }
 
   async create(req, res) {
@@ -32,7 +34,7 @@ class DeviceController {
       const { name, owner, serviceTag } = await req.json();
 
       // Cria um novo dispositivo sem o QR code inicialmente
-      const newDevice = new Device({ name, owner, serviceTag });
+      // const newDevice = new Device({{ name, owner, serviceTag }});
 
       // Salva o dispositivo no banco para obter o ID
       await newDevice.save();
