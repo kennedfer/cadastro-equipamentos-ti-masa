@@ -2,15 +2,17 @@
 import DeviceItem from "@/components/devices/DeviceItem";
 import { Header } from "@/components/header/Header";
 import { useEffect, useState } from "react";
-// const 
+
+import {RegisterDeviceForm} from '../../components/forms/RegisterDeviceForm'
 
 export default function Home() {
 
   return (
     <body>
       <main>
-        <div className="d-flex flex-column space-y-4 p-4">
-        Kennedfer
+        <div className="flex flex-col justify-center items-center v-screen h-screen">
+            <h1 className="font-bold text-2xl">Cadastro de Dispositivos</h1>
+            <RegisterDeviceForm/>
         </div>
       </main>
     </body>

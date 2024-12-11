@@ -7,7 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Device {
-  id          Int     @id @default(autoincrement())
-  name        String
+model Dispositivo {
+  id        Int         @id @default(autoincrement()) 
+  tipo      String?                 
+  marca     String?                   
+  modelo    String?                   
+  tag       String      @unique     
+  serial    String      @unique     
+  cautela   String?             
+  status    String?                                 
+//  atributos Atributo?                             
 }
+
+//model Atributo {
+//  id            Int         @id @default(autoincrement()) 
+//  chave         String                  
+//  valor         String              
+//  dispositivoId  Int                                        
+//  dispositivo  Dispositivo  @relation(fields: [dispositivoId], references: [id])
+//}

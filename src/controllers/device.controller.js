@@ -8,7 +8,7 @@ class DeviceController {
   async all(req) {
     // try {
       // const devices = await Device.find({});
-      const devices = await prisma.device.findMany();
+      const devices = await prisma.dispositivo.findMany();
       return new Response(JSON.stringify(devices), { status: 200 });
     // } catch (error) {
     //   // console.log(error);
@@ -18,7 +18,7 @@ class DeviceController {
 
   // Método para obter um dispositivo específico
   async get(id) {
-    const device = await prisma.device.findUnique({
+    const device = await prisma.dispositivo.findUnique({
       where:{
         id
       }
@@ -31,24 +31,24 @@ class DeviceController {
 
   async create(req, res) {
     try {
-      const { name, owner, serviceTag } = await req.json();
-
+      const data = await req.json();
       // Cria um novo dispositivo sem o QR code inicialmente
       // const newDevice = new Device({{ name, owner, serviceTag }});
 
       // Salva o dispositivo no banco para obter o ID
-      await newDevice.save();
+      // await newDevice.save();
 
       // Gera o URL baseado no ID do dispositivo
-      const domain = process.env.DOMAIN || 'http://localhost:3000'; // Altere o domínio conforme necessário
-      const qrCodeURL = `${domain}/qrcode/${newDevice._id}`;
+      // const domain = process.env.DOMAIN || 'http://localhost:3000'; // Altere o domínio conforme necessário
+      // const qrCodeURL = `${domain}/qrcode/${newDevice._id}`;
+      const newDevice = await prisma.dispositivo.create({data})
 
-      // Gera o QR code com base na URL
-      const qrcode = await QRCode.toDataURL(qrCodeURL);
+      // // Gera o QR code com base na URL
+      // const qrcode = await QRCode.toDataURL(qrCodeURL);
 
-      // Adiciona o QR code ao dispositivo e salva novamente
-      newDevice.qrcode = qrcode;
-      await newDevice.save();
+      // // Adiciona o QR code ao dispositivo e salva novamente
+      // newDevice.qrcode = qrcode;
+      // await newDevice.save();
 
       return new Response(JSON.stringify(newDevice), { status: 201 });
     } catch (error) {

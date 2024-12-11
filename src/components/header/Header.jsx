@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DeviceCreationForm } from "../forms/DeviceCreationForm";
+import { DeviceCreationForm } from "../forms/RegisterDeviceForm";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
 
