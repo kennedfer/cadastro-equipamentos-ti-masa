@@ -11,18 +11,22 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,} from "@/components/ui/select"
+ 
+import {Separator} from "@/components/ui/separator"
 
 import {useState} from "react"
 
-const exclusiveAtributes = {
-  computador:[
-    {key:"processador", type:"input"}
+const exclusiveAttributes = {
+  computador: [
+    { key: "processador", label: "Processador", type: "text", placeholder: "Ex.: Intel Core i7" },
+    { key: "memoria", label: "Memória RAM", type: "text", placeholder: "Ex.: 16GB" },
   ],
-  impressora:[
-    {key:"cor", type:"input"}
+  impressora: [
+    { key: "cor", label: "Cor", type: "text", placeholder: "Ex.: Preto" },
+    { key: "tipoImpressao", label: "Tipo de Impressão", type: "select", options: ["Laser", "Jato de Tinta"] },
   ],
-  "":[]
-}
+  vazio: [], // Para casos onde não há atributos exclusivos.
+};
 
 export function RegisterDeviceForm() {
   const {
@@ -33,15 +37,52 @@ export function RegisterDeviceForm() {
 
   const [type, setType] = useState("");
 
+  function renderAttributes(type) {
+  const attributes = exclusiveAttributes[type] || [];
+  
+
+  return attributes.map((attr) => {
+    if (attr.type === "text") {
+      return (
+        <div key={attr.key}>
+          <Label htmlFor={attr.key}>{attr.label}</Label>
+          <Input
+            id={attr.key}
+            type="text"
+            placeholder={attr.placeholder}
+            {...register(attr.key, { required: `${attr.label} é obrigatório.` })}
+          />
+          
+        </div>
+      );
+    } else if (attr.type === "select") {
+      return (
+        <div key={attr.key}>
+          <label htmlFor={attr.key}>{attr.label}</label>
+          <select id={attr.key} className="select">
+            {attr.options?.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </div>
+      );
+    }
+    return null;
+  });
+}
+
+
   const onSubmit = async (data) => {
-    const reply = await fetch("/api/device",{
-      method:"POST",
-      body: JSON.stringify(data)
-    });
+    // const reply = await fetch("/api/device",{
+    //   method:"POST",
+    //   body: JSON.stringify(data)
+    // });
 
-    const newDevice = await reply.json();
+    // const newDevice = await reply.json();
 
-    console.log(newDevice);
+    console.log(data);
   };
 
   return (
@@ -162,15 +203,10 @@ export function RegisterDeviceForm() {
       </div>
 
       {/* Submit Button */}
-      {
-        exclusiveAtributes[type].map( e => 
-          <div>
-            <Label>{e.key}</Label>
-            <Input type="text" id={e.key}/>
-          </div>
-
-        )
-      }
+      <div className="flex flex-col">
+        <Separator className="mt-2 mb-2" orientation="horizontal" />
+        {renderAttributes(type)}
+      </div>
       <Button type="submit">Cadastrar Dispositivo</Button>
     </form>
   );
