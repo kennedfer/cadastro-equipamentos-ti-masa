@@ -32,6 +32,7 @@ class DeviceController {
   async create(req, res) {
     try {
       const data = await req.json();
+      console.log(data)
       // Cria um novo dispositivo sem o QR code inicialmente
       // const newDevice = new Device({{ name, owner, serviceTag }});
 

@@ -31,6 +31,7 @@ const exclusiveAttributes = {
 export function RegisterDeviceForm() {
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm();
@@ -50,7 +51,8 @@ export function RegisterDeviceForm() {
             id={attr.key}
             type="text"
             placeholder={attr.placeholder}
-            {...register(attr.key, { required: `${attr.label} é obrigatório.` })}
+            // REGISTRA INPUT NO FORM
+            // {...register(attr.key, { required: `${attr.label} é obrigatório.` })} 
           />
           
         </div>
@@ -75,14 +77,14 @@ export function RegisterDeviceForm() {
 
 
   const onSubmit = async (data) => {
-    // const reply = await fetch("/api/device",{
-    //   method:"POST",
-    //   body: JSON.stringify(data)
-    // });
+    const reply = await fetch("/api/device",{
+      method:"POST",
+      body: JSON.stringify(data)
+    });
 
-    // const newDevice = await reply.json();
+    const newDevice = await reply.json();
 
-    console.log(data);
+    console.log(newDevice);
   };
 
   return (
@@ -90,7 +92,9 @@ export function RegisterDeviceForm() {
       {/* Tipo Field */}
       <div>
         <Label htmlFor="tipo">Tipo de Dispositivo</Label>
-        <Select id="tipo" onValueChange={tipo => setType(tipo)}>
+        {/* MUDAR O onValueChange para setar o tipo tambem */}
+        <Select id="tipo" onValueChange={(value) => setValue("tipo", value)}
+          >
           <SelectTrigger>
             <SelectValue placeholder="Selecione o tipo do dispositivo" />
           </SelectTrigger>
@@ -98,10 +102,7 @@ export function RegisterDeviceForm() {
             <SelectGroup>
               <SelectLabel>Tipo de Dispositivo</SelectLabel>
               <SelectItem value="computador">Computador</SelectItem>
-              <SelectItem value="impressora">Impressora</SelectItem>
-              {/* <SelectItem value="inativo">Inativo</SelectItem>
-              <SelectItem value="manutencao">Em Manutenção</SelectItem>
-              <SelectItem value="desativado">Desativado</SelectItem> */}
+              {/* <SelectItem value="impressora">Impressora</SelectItem> */}
             </SelectGroup>
           </SelectContent>
         </Select>
@@ -183,7 +184,7 @@ export function RegisterDeviceForm() {
       {/* Status Field */}
       <div>
         <Label htmlFor="status">Status</Label>
-        <Select id="status">
+        <Select id="status" onValueChange={(value) => setValue("status", value)}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione o estado do dispositivo" />
           </SelectTrigger>

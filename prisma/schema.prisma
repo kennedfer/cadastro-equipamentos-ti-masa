@@ -13,8 +13,8 @@ model Dispositivo {
   tipo      String?                 
   marca     String?                   
   modelo    String?                   
-  tag       String      @unique     
-  serial    String      @unique     
+  tag       String?      @unique     
+  sn    String?      @unique     
   cautela   String?             
   status    String?                                 
 //  atributos Atributo?                             
