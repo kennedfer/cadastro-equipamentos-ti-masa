@@ -205,7 +205,7 @@ export function RegisterDeviceForm() {
       {/* Submit Button */}
       <div className="flex flex-col">
         <Separator className="mt-2 mb-2" orientation="horizontal" />
-        {renderAttributes(type)}
+        {renderAttributes("computador")}
       </div>
       <Button type="submit">Cadastrar Dispositivo</Button>
     </form>
