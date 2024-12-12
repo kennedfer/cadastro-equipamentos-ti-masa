@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react"
+
 import {
   Select,
   SelectContent,
@@ -12,7 +14,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+
+import { useToast } from "@/hooks/use-toast"
 import { useState } from "react";
+import { LoadingButton } from "../buttons/LoadingButton";
 
 const exclusiveAttributes = {
   computador: [
@@ -26,6 +31,22 @@ const exclusiveAttributes = {
   vazio: [],
 };
 
+const prismaErrorMessages = {
+  P2002: "Um dos atributos únicos já foi salvo. Certifique-se de que o valor 'tag' ou 'patrimonio' está correto.",
+  P2003: "Não foi possível concluir a operação porque o item relacionado não existe.",
+  P2025: "O registro solicitado não foi encontrado. Verifique os dados fornecidos.",
+  P2016: "Houve um problema ao interpretar a consulta. Certifique-se de que os dados estão corretos.",
+  P2018: "Uma relação obrigatória está faltando. Verifique os dados enviados.",
+  P2011: "Um valor obrigatório não foi fornecido. Certifique-se de preencher todos os campos necessários.",
+  P3015: "O banco de dados está fora de sincronia. Entre em contato com o suporte técnico.",
+  P3006: "Falha ao executar a migração. Revise o modelo ou consulte o administrador do banco.",
+  P1001: "Não foi possível se conectar ao banco de dados. Verifique sua conexão e tente novamente.",
+  P1009: "O banco de dados especificado não existe. Entre em contato com o suporte técnico.",
+  P1010: "Falha na autenticação. Verifique suas credenciais de acesso ao banco de dados.",
+  P1017: "A conexão com o servidor foi encerrada inesperadamente. Tente novamente mais tarde."
+};
+
+
 export function RegisterDeviceForm() {
   const {
     register,
@@ -34,7 +55,12 @@ export function RegisterDeviceForm() {
     watch,
     formState: { errors },
   } = useForm();
+
+  const [loading, setLoading] = useState(false);
+
   const type = watch("tipo");
+
+  const {toast} = useToast();
 
   const renderAttributes = () => {
     const attributes = exclusiveAttributes[type] || [];
@@ -84,13 +110,35 @@ export function RegisterDeviceForm() {
   };
 
   const onSubmit = async (data) => {
+    setLoading(true);
+
     const reply = await fetch("/api/device", {
       method: "POST",
       body: JSON.stringify(data),
     });
 
     const newDevice = await reply.json();
-    console.log(newDevice);
+    const error = newDevice.error;
+
+
+    if(error){
+      console.log(error)
+
+      toast({
+        title:"Erro:",
+        description:(prismaErrorMessages[error.code] || "Ocorreu um erro inesperado. Tente novamente."),
+        variant: "destructive"
+      });
+
+      return setLoading(false);
+    }
+
+    toast({
+      title:"Sucesso:",
+      variant: "sucess",
+      description:"Cadastro realizado!"});
+
+    window.location.reload();
   };
 
   return (
@@ -272,7 +320,7 @@ export function RegisterDeviceForm() {
       </div>
 
       {/* Botão de Enviar */}
-      <Button type="submit">Cadastrar Dispositivo</Button>
+      <LoadingButton type="submit" label="Cadastrar" loading={loading}/>
     </form>
   );
 }

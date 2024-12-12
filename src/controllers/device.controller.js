@@ -53,8 +53,7 @@ class DeviceController {
 
       return new Response(JSON.stringify(newDevice), { status: 201 });
     } catch (error) {
-      console.log(error)
-      return new Response(JSON.stringify({ error: 'Error creating device' }), { status: 500 });
+      return new Response(JSON.stringify({ error}), { status: 500 });
     }
   }
 

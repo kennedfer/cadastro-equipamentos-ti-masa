@@ -7,18 +7,23 @@ import {Button} from "@/components/ui/button"
 
 import { useRef } from 'react';
 import {DeviceCard} from "@/components/devices/DeviceCard";
+import { LoadingButton } from "@/components/buttons/LoadingButton";
 
 export default function Home() {
     const searchRef = useRef(null);
     const [device, setDevice] = useState(null)
 
-    async function searchDevice(){
-        const sn = searchRef.current.value;
+    const [loading, setLoading] = useState(false);
 
-        const data = await fetch("/api/device/"+sn);
+    async function searchDevice(){
+        setLoading(true);
+        const patrimonio = searchRef.current.value;
+
+        const data = await fetch("/api/device/"+patrimonio);
         const device = await data.json();
 
         setDevice(device);
+        setLoading(false);
     }
 
     return (
@@ -28,7 +33,8 @@ export default function Home() {
                 <h1 className="font-bold text-2xl">Pesquisa de Dispositivos</h1>
                 <Label htmlFor="busca">Número de Série para buscar:</Label>
                 <Input ref={searchRef} placeholder="Ex.: 988213, 182123" className="w-[300px]" id="busca" type="text"/>
-                <Button onClick={searchDevice}>Pesquisar</Button>
+                <LoadingButton loading={loading} onClick={searchDevice} label="Pesquisar" />
+
             { device && <DeviceCard device={device}/>}
             </div>
 
