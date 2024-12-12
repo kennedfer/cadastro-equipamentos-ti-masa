@@ -6,7 +6,7 @@ import {Label} from "@/components/ui/label"
 import {Button} from "@/components/ui/button"
 
 import { useRef } from 'react';
-import DeviceCard from "@/components/devices/DeviceCard";
+import {DeviceCard} from "@/components/devices/DeviceCard";
 
 export default function Home() {
     const searchRef = useRef(null);
@@ -23,7 +23,7 @@ export default function Home() {
 
     return (
         <body>
-        <main>
+        <main className="p-10">
             <div className="flex flex-col gap-2 justify-center items-center v-screen h-screen">
                 <h1 className="font-bold text-2xl">Pesquisa de Dispositivos</h1>
                 <Label htmlFor="busca">Número de Série para buscar:</Label>

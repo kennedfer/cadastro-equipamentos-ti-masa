@@ -9,15 +9,17 @@ datasource db {
 }
 
 model Dispositivo {
-  id        Int         @id @default(autoincrement()) 
-  tipo      String?                 
-  marca     String?                   
-  modelo    String?                   
-  tag       String?      @unique     
-  sn    String?      @unique     
-  cautela   String?             
-  status    String?                                 
-//  atributos Atributo?                             
+  id          Int      @id @default(autoincrement()) 
+  cpf         String 
+  funcao      String 
+  marca       String 
+  modelo      String 
+  nome        String 
+  patrimonio  String  @unique 
+  setor       String 
+  status      String 
+  tag         String  @unique 
+  tipo        String 
 }
 
 //model Atributo {

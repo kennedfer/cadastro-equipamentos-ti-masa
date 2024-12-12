@@ -131,17 +131,68 @@ export function RegisterDeviceForm() {
         </div>
         <div>
           <Label htmlFor="modelo">Modelo</Label>
+          <Select id="modelo"  onValueChange={(value) => setValue("modelo", value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Selecione o modelo do computador" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {/* Série Precision */}
+                <SelectLabel>Precision</SelectLabel>
+                <SelectItem value="Precision 7670">Precision 7670</SelectItem>
+                <SelectItem value="Precision 7680">Precision 7680</SelectItem>
+                <SelectItem value="Precision 7550">Precision 7550</SelectItem>
+                <SelectItem value="Precision 7530">Precision 7530</SelectItem>
+                <SelectItem value="Precision 7340">Precision 7340</SelectItem>
+                <SelectItem value="Precision 5820">Precision 5820</SelectItem>
+              </SelectGroup>
+
+              <SelectGroup>
+                {/* Série Latitude */}
+                <SelectLabel>Latitude</SelectLabel>
+                <SelectItem value="Latitude 3420">Latitude 3420</SelectItem>
+                <SelectItem value="Latitude 3490">Latitude 3490</SelectItem>
+                <SelectItem value="Latitude 3410">Latitude 3410</SelectItem>
+                <SelectItem value="Latitude 3400">Latitude 3400</SelectItem>
+                <SelectItem value="Latitude 7440">Latitude 7440</SelectItem>
+                <SelectItem value="Latitude 7340">Latitude 7340</SelectItem>
+                <SelectItem value="Latitude 5420">Latitude 5420</SelectItem>
+              </SelectGroup>
+
+              <SelectGroup>
+                {/* Série OptiPlex */}
+                <SelectLabel>OptiPlex</SelectLabel>
+                <SelectItem value="OptiPlex 5070">OptiPlex 5070</SelectItem>
+                <SelectItem value="OptiPlex 3070">OptiPlex 3070</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="tag">Service Tag</Label>
           <Input
-            id="modelo"
+            id="tag"
             type="text"
-            placeholder="Ex.: Inspiron, ThinkPad"
-            {...register("modelo", { required: "Modelo é obrigatório" })}
+            placeholder="Ex.: JKDKOI, DA2JH4"
+            {...register("tag", { required: "service tag é obrigatório" })}
           />
-          {errors.modelo && (
-            <p className="text-red-500 text-sm mt-1">{errors.modelo.message}</p>
+          {errors.tag && (
+            <p className="text-red-500 text-sm mt-1">{errors.tag.message}</p>
           )}
         </div>
-        {renderAttributes()}
+        <div>
+          <Label htmlFor="patrimonio">Patrimonio</Label>
+          <Input
+            id="patrimonio"
+            type="text"
+            placeholder="Ex.: 123134, 987654"
+            {...register("patrimonio", { required: "patrimonio é obrigatório" })}
+          />
+          {errors.patrimonio && (
+            <p className="text-red-500 text-sm mt-1">{errors.patrimonio.message}</p>
+          )}
+        </div>
+        {/* {renderAttributes()} */}
         <div>
           <Label htmlFor="status">Status</Label>
           <Select id="status" onValueChange={(value) => setValue("status", value)}>
@@ -174,7 +225,7 @@ export function RegisterDeviceForm() {
             id="nome"
             type="text"
             placeholder="Responsável ou local"
-            {...register("cautela", { required: "Nome é obrigatório" })}
+            {...register("nome", { required: "Nome é obrigatório" })}
           />
           {errors.nome && (
             <p className="text-red-500 text-sm mt-1">{errors.nome.message}</p>
@@ -185,6 +236,7 @@ export function RegisterDeviceForm() {
           <Input
             id="cpf"
             type="text"
+            pattern="\d{3}\.\d{3}\.\d{3}-\d{2}\"
             placeholder="Ex.: 123.456.789-00"
             {...register("cpf", { required: "cpf é obrigatório" })}
           />

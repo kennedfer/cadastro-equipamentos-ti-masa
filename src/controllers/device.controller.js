@@ -17,10 +17,10 @@ class DeviceController {
   }
 
   // Método para obter um dispositivo específico
-  async get(serial) {
+  async get(patrimonio) {
     const device = await prisma.dispositivo.findUnique({
       where:{
-        sn: serial
+        patrimonio
       }
     });
     if (!device) {
@@ -53,7 +53,7 @@ class DeviceController {
 
       return new Response(JSON.stringify(newDevice), { status: 201 });
     } catch (error) {
-      console.error('Error creating device:', error);
+      console.log(error)
       return new Response(JSON.stringify({ error: 'Error creating device' }), { status: 500 });
     }
   }
