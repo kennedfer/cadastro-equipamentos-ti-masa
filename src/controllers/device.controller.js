@@ -17,10 +17,10 @@ class DeviceController {
   }
 
   // Método para obter um dispositivo específico
-  async get(id) {
+  async get(serial) {
     const device = await prisma.dispositivo.findUnique({
       where:{
-        id
+        sn: serial
       }
     });
     if (!device) {

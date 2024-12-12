@@ -2,7 +2,7 @@ import deviceController from "@/controllers/device.controller";
 
 export async function GET(_, { params }) {
   const { id } = params;
-  return deviceController.get(Number(id));
+  return deviceController.get(id);
 }
 
 export async function PATCH(req, { params }) {
