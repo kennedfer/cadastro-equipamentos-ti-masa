@@ -1,21 +1,82 @@
-"use client"
-import DeviceItem from "@/components/devices/DeviceItem";
-import { Header } from "@/components/header/Header";
-import { useEffect, useState } from "react";
+"use client";
 
-import {RegisterDeviceForm} from '../../components/forms/RegisterDeviceForm'
+import { useSession, signIn, signOut } from "next-auth/react";
 
-export default function Home() {
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
+
+import { Toaster } from "@/components/ui/toaster";
+
+import { RegisterDeviceForm } from "../../components/forms/RegisterDeviceForm";
+import { useRouter } from "next/navigation";
+
+export default function DeviceRegistrationPage() {
+  const { data: session, status } = useSession();
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
+
+  if (status === "loading") {
+    return (
+      <body>
+        <p>Carregando...</p>
+      </body>
+    );
+  }
+
+  console.log(session);
+
+  if (status != "loading" && !session) {
+    return signIn();
+  }
+
+  const onSubmit = async data => {
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/device", {
+        method: "POST",
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+
+      if (result.error) {
+        console.log(result.error);
+
+        toast({
+          title: "Erro:",
+          description:
+            prismaErrorMessages[result.error.code] || "Erro inesperado.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      toast({
+        title: "Sucesso:",
+        description: "Cadastro realizado!",
+        variant: "success"
+      });
+      window.location.reload();
+    } catch (error) {
+      toast({
+        title: "Erro:",
+        description: "Erro ao enviar dados.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <body>
-      <main>
-        <div className="flex flex-col justify-center items-center v-screen h-screen">
-            <h1 className="font-bold text-2xl">Cadastro de Dispositivos</h1>
-            <RegisterDeviceForm/>
+      <main className="">
+        <div className="flex flex-col items-center v-screen overflow-auto p-16 h-screen">
+          <h1 className="font-bold text-2xl">Cadastro de Dispositivos</h1>
+          <RegisterDeviceForm onSubmit={onSubmit} loading={loading} />
         </div>
       </main>
+      <Toaster />
     </body>
-
   );
 }

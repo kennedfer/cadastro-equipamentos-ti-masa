@@ -1,213 +1,134 @@
 import { useForm } from "react-hook-form";
-// import { Button, Input, Label, Select } from "@shadcn/ui"; // Adjust import path if needed.
-import {Label} from "@/components/ui/label"
-import {Button} from "@/components/ui/button"
-import {Input} from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,} from "@/components/ui/select"
- 
-import {Separator} from "@/components/ui/separator"
+import { RenderField, RenderSelect, renderDynamicFields } from "../input/FieldsRenderer";
+import { Separator } from "@/components/ui/separator";
+import { LoadingButton } from "../buttons/LoadingButton";
 
-import {useState} from "react"
-
-const exclusiveAttributes = {
-  computador: [
-    { key: "processador", label: "Processador", type: "text", placeholder: "Ex.: Intel Core i7" },
-    { key: "memoria", label: "Memória RAM", type: "text", placeholder: "Ex.: 16GB" },
-  ],
-  impressora: [
-    { key: "cor", label: "Cor", type: "text", placeholder: "Ex.: Preto" },
-    { key: "tipoImpressao", label: "Tipo de Impressão", type: "select", options: ["Laser", "Jato de Tinta"] },
-  ],
-  vazio: [], // Para casos onde não há atributos exclusivos.
-};
-
-export function RegisterDeviceForm() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const [type, setType] = useState("");
-
-  function renderAttributes(type) {
-  const attributes = exclusiveAttributes[type] || [];
-  
-
-  return attributes.map((attr) => {
-    if (attr.type === "text") {
-      return (
-        <div key={attr.key}>
-          <Label htmlFor={attr.key}>{attr.label}</Label>
-          <Input
-            id={attr.key}
-            type="text"
-            placeholder={attr.placeholder}
-            {...register(attr.key, { required: `${attr.label} é obrigatório.` })}
-          />
-          
-        </div>
-      );
-    } else if (attr.type === "select") {
-      return (
-        <div key={attr.key}>
-          <label htmlFor={attr.key}>{attr.label}</label>
-          <select id={attr.key} className="select">
-            {attr.options?.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-      );
-    }
-    return null;
-  });
-}
-
-
-  const onSubmit = async (data) => {
-    // const reply = await fetch("/api/device",{
-    //   method:"POST",
-    //   body: JSON.stringify(data)
-    // });
-
-    // const newDevice = await reply.json();
-
-    console.log(data);
-  };
+export function RegisterDeviceForm({ onSubmit, loading }) {
+  const { register, setValue, handleSubmit, watch, formState: { errors } } = useForm();
+  const type = watch("tipo");
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-2 w-[600px]">
-      {/* Tipo Field */}
-      <div>
-        <Label htmlFor="tipo">Tipo de Dispositivo</Label>
-        <Select id="tipo" onValueChange={tipo => setType(tipo)}>
-          <SelectTrigger>
-            <SelectValue placeholder="Selecione o tipo do dispositivo" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Tipo de Dispositivo</SelectLabel>
-              <SelectItem value="computador">Computador</SelectItem>
-              <SelectItem value="impressora">Impressora</SelectItem>
-              {/* <SelectItem value="inativo">Inativo</SelectItem>
-              <SelectItem value="manutencao">Em Manutenção</SelectItem>
-              <SelectItem value="desativado">Desativado</SelectItem> */}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        {errors.status && (
-          <p className="text-red-500 text-sm mt-1">{errors.status.message}</p>
-        )}
-      </div>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-[600px]">
+      {/* Dados do Equipamento */}
+      <div className="space-y-2">
+        <h2 className="text-lg font-semibold text-gray-500">Dados do Equipamento</h2>
+        <Separator />
 
-      {/* Marca Field */}
-      <div>
-        <Label htmlFor="marca">Marca</Label>
-        <Input
+        <RenderSelect
+          id="tipo"
+          label="Tipo de Dispositivo"
+          options={[
+            { value: "computador", label: "Computador" },
+            { value: "impressora", label: "Impressora" },
+          ]}
+          setValue={setValue}
+          errors={errors}
+        />
+
+        <RenderField
           id="marca"
-          type="text"
+          label="Marca"
           placeholder="Ex.: Dell, HP, Lenovo"
-          {...register("marca", { required: "Marca é obrigatória" })}
+          register={register}
+          errors={errors}
         />
-        {errors.marca && (
-          <p className="text-red-500 text-sm mt-1">{errors.marca.message}</p>
-        )}
-      </div>
 
-      {/* Modelo Field */}
-      <div>
-        <Label htmlFor="modelo">Modelo</Label>
-        <Input
+        <RenderSelect
           id="modelo"
-          type="text"
-          placeholder="Ex.: Inspiron, ThinkPad"
-          {...register("modelo", { required: "Modelo é obrigatório" })}
+          label="Modelo"
+          options={[
+            { value: "Precision 7670", label: "Precision 7670" },
+            { value: "Precision 7680", label: "Precision 7680" },
+            { value: "Precision 7550", label: "Precision 7550" },
+            { value: "Precision 7530", label: "Precision 7530" },
+            { value: "Precision 7340", label: "Precision 7340" },
+            { value: "Precision 5820", label: "Precision 5820" },
+            { value: "Latitude 3420", label: "Latitude 3420" },
+            { value: "Latitude 3490", label: "Latitude 3490" },
+            { value: "Latitude 3410", label: "Latitude 3410" },
+            { value: "Latitude 3400", label: "Latitude 3400" },
+            { value: "Latitude 7440", label: "Latitude 7440" },
+            { value: "Latitude 7340", label: "Latitude 7340" },
+            { value: "Latitude 5420", label: "Latitude 5420" },
+            { value: "OptiPlex 5070", label: "OptiPlex 5070" },
+            { value: "OptiPlex 3070", label: "OptiPlex 3070" },
+          ]}
+          setValue={setValue}
+          errors={errors}
         />
-        {errors.modelo && (
-          <p className="text-red-500 text-sm mt-1">{errors.modelo.message}</p>
-        )}
-      </div>
 
-      {/* TAG Field */}
-      <div>
-        <Label htmlFor="tag">TAG</Label>
-        <Input
+        <RenderField
           id="tag"
-          type="text"
-          placeholder="Identificação do patrimônio"
-          {...register("tag", { required: "TAG é obrigatória" })}
+          label="Service Tag"
+          placeholder="Ex.: JKDKOI, DA2JH4"
+          register={register}
+          errors={errors}
         />
-        {errors.tag && (
-          <p className="text-red-500 text-sm mt-1">{errors.tag.message}</p>
-        )}
+
+        <RenderField
+          id="patrimonio"
+          label="Patrimônio"
+          placeholder="Ex.: 123134, 987654"
+          register={register}
+          errors={errors}
+        />
+
+        <RenderSelect
+          id="status"
+          label="Status"
+          options={[
+            { value: "ativo", label: "Ativo" },
+            { value: "inativo", label: "Inativo" },
+            { value: "manutencao", label: "Em Manutenção" },
+            { value: "desativado", label: "Desativado" },
+          ]}
+          setValue={setValue}
+          errors={errors}
+        />
+
+        {renderDynamicFields("tipo", register, errors, setValue)}
       </div>
 
-      {/* S/N Field */}
-      <div>
-        <Label htmlFor="sn">Número de Série</Label>
-        <Input
-          id="sn"
-          type="text"
-          placeholder="Número de série"
-          {...register("sn", { required: "Número de série é obrigatório" })}
-        />
-        {errors.sn && (
-          <p className="text-red-500 text-sm mt-1">{errors.sn.message}</p>
-        )}
-      </div>
+      {/* Dados do Responsável */}
+      <div className="space-y-2">
+        <h2 className="text-lg font-semibold text-gray-500">Dados do Responsável</h2>
+        <Separator />
 
-      {/* Cautela Field */}
-      <div>
-        <Label htmlFor="cautela">Cautela</Label>
-        <Input
-          id="cautela"
-          type="text"
+        <RenderField
+          id="nome"
+          label="Nome"
           placeholder="Responsável ou local"
-          {...register("cautela", { required: "Cautela é obrigatória" })}
+          register={register}
+          errors={errors}
         />
-        {errors.cautela && (
-          <p className="text-red-500 text-sm mt-1">{errors.cautela.message}</p>
-        )}
+
+        <RenderField
+          id="cpf"
+          label="CPF"
+          placeholder="Ex.: 123.456.789-00"
+          register={register}
+          errors={errors}
+        />
+
+        <RenderField
+          id="setor"
+          label="Setor"
+          placeholder="Ex.: RH, TI, BARRAGEM..."
+          register={register}
+          errors={errors}
+        />
+
+        <RenderField
+          id="funcao"
+          label="Função"
+          placeholder="Ex.: ANL RH PL, ANL TI SR..."
+          register={register}
+          errors={errors}
+        />
       </div>
 
-      {/* Status Field */}
-      <div>
-        <Label htmlFor="status">Status</Label>
-        <Select id="status">
-          <SelectTrigger>
-            <SelectValue placeholder="Selecione o estado do dispositivo" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectLabel>Estado do Dispositivo</SelectLabel>
-              <SelectItem value="ativo">Ativo</SelectItem>
-              <SelectItem value="inativo">Inativo</SelectItem>
-              <SelectItem value="manutencao">Em Manutenção</SelectItem>
-              <SelectItem value="desativado">Desativado</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-        {errors.status && (
-          <p className="text-red-500 text-sm mt-1">{errors.status.message}</p>
-        )}
-      </div>
-
-      {/* Submit Button */}
-      <div className="flex flex-col">
-        <Separator className="mt-2 mb-2" orientation="horizontal" />
-        {renderAttributes(type)}
-      </div>
-      <Button type="submit">Cadastrar Dispositivo</Button>
+      {/* Botão de Enviar */}
+      <LoadingButton type="submit" label="Cadastrar" loading={loading} />
     </form>
   );
 }

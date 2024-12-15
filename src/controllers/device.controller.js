@@ -17,10 +17,10 @@ class DeviceController {
   }
 
   // Método para obter um dispositivo específico
-  async get(id) {
+  async get(patrimonio) {
     const device = await prisma.dispositivo.findUnique({
       where:{
-        id
+        patrimonio
       }
     });
     if (!device) {
@@ -32,6 +32,7 @@ class DeviceController {
   async create(req, res) {
     try {
       const data = await req.json();
+      console.log(data)
       // Cria um novo dispositivo sem o QR code inicialmente
       // const newDevice = new Device({{ name, owner, serviceTag }});
 
@@ -52,8 +53,7 @@ class DeviceController {
 
       return new Response(JSON.stringify(newDevice), { status: 201 });
     } catch (error) {
-      console.error('Error creating device:', error);
-      return new Response(JSON.stringify({ error: 'Error creating device' }), { status: 500 });
+      return new Response(JSON.stringify({ error}), { status: 500 });
     }
   }
 
