@@ -1,48 +1,49 @@
 "use client";
 
-import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { LoginForm } from "@/components/forms/LoginForm";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const [isButtonLoading, setButtonIsLoading] = useState(false);
+
   const router = useRouter();
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const res = await signIn("credentials", {
-      redirect: false,
-      apelido: username,
-      senha: password
+    setButtonIsLoading(true);
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ apelido: username, senha: password })
     });
 
-    if (res.error) {
-      alert("Login failed");
+    const userToken = await res.json();
+
+    if (userToken.error) {
+      alert(userToken.error);
+      setButtonIsLoading(false);
     } else {
-      router.push("/"); // Redireciona após login
+      localStorage.setItem("token", JSON.stringify(userToken));
+      router.push("/");
     }
   };
 
   return (
     <body>
-      <main>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={username}
-            onChange={e => setUsername(e.target.value)}
-            placeholder="Username"
+      <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+        <div className="w-full max-w-sm">
+          <LoginForm
+            setPassword={setPassword}
+            setUsername={setUsername}
+            isButtonLoading={isButtonLoading}
+            onSubmit={handleSubmit}
           />
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            placeholder="Password"
-          />
-          <button type="submit">Login</button>
-        </form>
-      </main>
+        </div>
+      </div>
     </body>
   );
 }

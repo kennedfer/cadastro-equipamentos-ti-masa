@@ -1,33 +1,19 @@
 "use client";
 
-import { useSession, signIn, signOut } from "next-auth/react";
-
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Toaster } from "@/components/ui/toaster";
 
 import { RegisterDeviceForm } from "../../components/forms/RegisterDeviceForm";
 import { useRouter } from "next/navigation";
+import { prismaErrorMessages } from "@/components/forms/form.config";
 
 export default function DeviceRegistrationPage() {
-  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
-  if (status === "loading") {
-    return (
-      <body>
-        <p>Carregando...</p>
-      </body>
-    );
-  }
-
-  console.log(session);
-
-  if (status != "loading" && !session) {
-    return signIn();
-  }
+  const router = useRouter();
 
   const onSubmit = async data => {
     setLoading(true);
@@ -67,6 +53,27 @@ export default function DeviceRegistrationPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    (async function() {
+      const { token } = JSON.parse(localStorage.getItem("token"));
+
+      const res = await fetch("/api/auth/token", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}` // Inclua o token no cabeçalho
+        }
+      });
+
+      const tokenValidation = await res.json();
+
+      if (tokenValidation.error) {
+        console.log(token, tokenValidation);
+        router.push("/login");
+      }
+    })();
+  }, []);
 
   return (
     <body>

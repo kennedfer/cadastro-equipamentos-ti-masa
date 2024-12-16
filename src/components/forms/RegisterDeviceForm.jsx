@@ -86,7 +86,7 @@ export function RegisterDeviceForm({ onSubmit, loading }) {
           errors={errors}
         />
 
-        {renderDynamicFields("tipo", register, errors, setValue)}
+        {renderDynamicFields(type, register, errors, setValue)}
       </div>
 
       {/* Dados do Responsável */}
