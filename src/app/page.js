@@ -1,47 +1,48 @@
-"use client"
+"use client";
 
-import * as React from "react";
-import { Button } from "@/components/ui/button"; // Supondo que o botão esteja configurado dessa forma no Shadcn
 import { useRouter } from "next/navigation";
+import { LoadingButton } from "@/components/buttons/LoadingButton";
+import { useState } from "react";
 
 export default function Home() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCadastrarClick = () => {
-    // Ação para redirecionar para a página de cadastro ou qualquer outra lógica necessária
+    setIsLoading(true);
     router.push("/cadastro");
   };
 
   const handlePesquisaClick = () => {
-    // Ação para redirecionar para a página de pesquisa ou qualquer outra lógica necessária
+    setIsLoading(true);
     router.push("/pesquisa");
   };
 
   return (
     <body>
       <main>
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-      <div>
-        <h1 className="text-2xl font-semibold text-center mb-6">
-          Cadastro de Equipamentos TI
-        </h1>
-        <div className="flex justify-around gap-2">
-          <Button
-            className="flex-grow"
-            onClick={handleCadastrarClick}
-          >
-            Cadastrar
-          </Button>
-          <Button
-            className="flex-grow"
-            onClick={handlePesquisaClick}
-          >
-            Pesquisa
-          </Button>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+          <div>
+            <h1 className="text-2xl font-semibold text-center mb-6">
+              Cadastro de Equipamentos TI
+            </h1>
+            <div className="flex justify-around gap-2">
+              <LoadingButton
+                className="grow"
+                onClick={handleCadastrarClick}
+                label="Cadastrar"
+                loading={isLoading}
+              />
+              <LoadingButton
+                className="grow"
+                onClick={handlePesquisaClick}
+                label="Pesquisar"
+                loading={isLoading}
+              />
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-    </main>
+      </main>
     </body>
   );
 }

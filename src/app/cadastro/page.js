@@ -15,7 +15,7 @@ export default function DeviceRegistrationPage() {
 
   const router = useRouter();
 
-  const onSubmit = async data => {
+  const onSubmit = async (data, resetForm) => {
     setLoading(true);
 
     try {
@@ -42,7 +42,9 @@ export default function DeviceRegistrationPage() {
         description: "Cadastro realizado!",
         variant: "success"
       });
-      window.location.reload();
+
+      // resetForm();
+      setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
       toast({
         title: "Erro:",
