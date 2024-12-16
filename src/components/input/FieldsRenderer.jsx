@@ -40,9 +40,23 @@ export function renderDynamicFields(type, register, errors, setValue) {
   const attributes = exclusiveAttributes[type] || [];
   return attributes.map((attr) =>
     attr.type === "text" ? (
-      <RenderField key={attr.key} id={attr.key} label={attr.label} placeholder={attr.placeholder} register={register} errors={errors} />
+      <RenderField
+        key={attr.key}
+        id={`atributos.${attr.key}`} // Chave ajustada para ser registrada dentro de "atributos"
+        label={attr.label}
+        placeholder={attr.placeholder}
+        register={register}
+        errors={errors}
+      />
     ) : (
-      <RenderSelect key={attr.key} id={attr.key} label={attr.label} options={attr.options} setValue={setValue} errors={errors} />
+      <RenderSelect
+        key={attr.key}
+        id={`atributos.${attr.key}`} // Chave ajustada para "atributos"
+        label={attr.label}
+        options={attr.options}
+        setValue={setValue}
+        errors={errors}
+      />
     )
   );
 }

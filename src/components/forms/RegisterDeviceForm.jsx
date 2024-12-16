@@ -4,11 +4,13 @@ import { Separator } from "@/components/ui/separator";
 import { LoadingButton } from "../buttons/LoadingButton";
 
 export function RegisterDeviceForm({ onSubmit, loading }) {
-  const { register, setValue, handleSubmit, watch, formState: { errors } } = useForm();
+  const { register, setValue, handleSubmit, reset,watch, formState: { errors } } = useForm();
   const type = watch("tipo");
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-[600px]">
+    <form onSubmit={handleSubmit(e => {
+      onSubmit(e, reset);
+      })} className="space-y-4 w-[600px]">
       {/* Dados do Equipamento */}
       <div className="space-y-2">
         <h2 className="text-lg font-semibold text-gray-500">Dados do Equipamento</h2>
@@ -86,7 +88,7 @@ export function RegisterDeviceForm({ onSubmit, loading }) {
           errors={errors}
         />
 
-        {renderDynamicFields("tipo", register, errors, setValue)}
+        {renderDynamicFields(type, register, errors, setValue)}
       </div>
 
       {/* Dados do Responsável */}
