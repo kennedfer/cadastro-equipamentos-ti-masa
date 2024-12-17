@@ -25,27 +25,26 @@ export default function Home() {
   }
 
   return (
-    <body>
-      <main className="grid p-16 overflow-auto h-screen">
-        <div className="flex flex-col gap-2 justify-center items-center">
-          <h1 className="font-bold text-2xl">Pesquisa de Dispositivos</h1>
-          <Label htmlFor="busca">Número de Série para buscar:</Label>
-          <Input
-            ref={searchRef}
-            placeholder="Ex.: 988213, 182123"
-            className="w-[300px]"
-            id="busca"
-            type="text"
-          />
-          <LoadingButton
-            loading={loading}
-            onClick={searchDevice}
-            label="Pesquisar"
-          />
 
-          {device && <DeviceCard device={device} />}
-        </div>
-      </main>
-    </body>
+    <main className="grid p-16 overflow-auto h-screen">
+      <div className="flex flex-col gap-2 justify-center items-center">
+        <h1 className="font-bold text-2xl">Pesquisa de Dispositivos</h1>
+        <Label htmlFor="busca">Número de Série para buscar:</Label>
+        <Input
+          ref={searchRef}
+          placeholder="Ex.: 988213, 182123"
+          className="w-[300px]"
+          id="busca"
+          type="text"
+        />
+        <LoadingButton
+          loading={loading}
+          onClick={searchDevice}
+          label="Pesquisar"
+        />
+
+        {device && <DeviceCard device={device} />}
+      </div>
+    </main>
   );
 }

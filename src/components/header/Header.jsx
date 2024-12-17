@@ -1,26 +1,18 @@
 import { useState } from "react";
-import { DeviceCreationForm } from "../forms/RegisterDeviceForm";
 import { Separator } from "../ui/separator";
+import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 
 export function Header() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const router = useRouter();
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  function handleBackClick() {
+    router.push("/");
+  }
 
   return (
-    <div>
-      <header className="p-4 flex justify-between items-center">
-        <h1 className="scroll-m-20 pb-2 text-3xl font-semibold tracking-tight first:mt-0">
-          Cadastro de Equipamentos TI
-        </h1>
-
-        <Button onClick={handleOpenModal}>Criar Novo Registro</Button>
-      </header>
-
-      <Separator />
-      <DeviceCreationForm isOpen={isModalOpen} onClose={handleCloseModal} />
-    </div>
+    <header className="fixed p-4 flex justify-between items-center">
+      <Button onClick={handleBackClick}>Voltar</Button>
+    </header>
   );
 }

@@ -57,8 +57,14 @@ export default function DeviceRegistrationPage() {
   };
 
   useEffect(() => {
-    (async function() {
-      const { token } = JSON.parse(localStorage.getItem("token"));
+    (async function () {
+      const localToken = (localStorage.getItem("token"));
+
+      if (!localToken) {
+        return router.push("/login");
+      }
+
+      const { token } = localToken;
 
       const res = await fetch("/api/auth/token", {
         method: "GET",
@@ -78,7 +84,7 @@ export default function DeviceRegistrationPage() {
   }, []);
 
   return (
-    <body>
+    <>
       <main className="">
         <div className="flex flex-col items-center v-screen overflow-auto p-16 h-screen">
           <h1 className="font-bold text-2xl">Cadastro de Dispositivos</h1>
@@ -86,6 +92,6 @@ export default function DeviceRegistrationPage() {
         </div>
       </main>
       <Toaster />
-    </body>
+    </>
   );
 }

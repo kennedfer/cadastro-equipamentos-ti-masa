@@ -19,30 +19,27 @@ export default function Home() {
   };
 
   return (
-    <body>
-      <main>
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-          <div>
-            <h1 className="text-2xl font-semibold text-center mb-6">
-              Cadastro de Equipamentos TI
-            </h1>
-            <div className="flex justify-around gap-2">
-              <LoadingButton
-                className="grow"
-                onClick={handleCadastrarClick}
-                label="Cadastrar"
-                loading={isLoading}
-              />
-              <LoadingButton
-                className="grow"
-                onClick={handlePesquisaClick}
-                label="Pesquisar"
-                loading={isLoading}
-              />
-            </div>
+    <main>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+        <div>
+          <h1 className="text-2xl font-semibold text-center mb-6">
+            Cadastro de Equipamentos TI
+          </h1>
+          <div className="flex justify-around gap-2">
+            <LoadingButton
+              className="grow"
+              onClick={handleCadastrarClick}
+              label="Cadastrar"
+              loading={isLoading}
+            />
+            <LoadingButton
+              className="grow"
+              onClick={handlePesquisaClick}
+              label="Pesquisar"
+              loading={isLoading}
+            />
           </div>
         </div>
-      </main>
-    </body>
-  );
+      </div>
+    </main>  );
 }
