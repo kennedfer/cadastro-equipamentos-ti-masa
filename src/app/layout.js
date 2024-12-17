@@ -5,6 +5,7 @@ import "./globals.css";
 import { Header } from "@/components/header/Header";
 import { Toaster } from "@/components/ui/toaster";
 import { usePathname } from "next/navigation";
+import { Footer } from "./footer/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,6 +33,7 @@ export default function RootLayout({ children }) {
         {shouldShowHeader && <Header />}
         {children}
         <Toaster />
+        <Footer />
       </body>
     </html>
   );

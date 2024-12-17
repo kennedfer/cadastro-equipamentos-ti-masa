@@ -89,7 +89,7 @@ export default function DeviceRegistrationPage() {
   return (
     <>
       <main className="">
-        <div className="flex flex-col items-center v-screen overflow-auto p-16 h-screen">
+        <div className="flex flex-col items-center p-16">
           <h1 className="font-bold text-2xl">Cadastro de Dispositivos</h1>
           <RegisterDeviceForm onSubmit={onSubmit} loading={loading} />
         </div>
