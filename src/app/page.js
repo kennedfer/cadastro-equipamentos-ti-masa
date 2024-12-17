@@ -6,40 +6,42 @@ import { useState } from "react";
 
 export default function Home() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(null); // null: nenhum botão está carregando
 
-  const handleCadastrarClick = () => {
-    setIsLoading(true);
-    router.push("/cadastro");
-  };
-
-  const handlePesquisaClick = () => {
-    setIsLoading(true);
-    router.push("/pesquisa");
+  const navigateTo = async (path, button) => {
+    setLoadingButton(button); // Define o botão que está carregando
+    router.push(path);
   };
 
   return (
     <main>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <div>
-          <h1 className="text-2xl font-semibold text-center mb-6">
-            Cadastro de Equipamentos TI
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        <div className="p-6 bg-white max-w-lg w-full">
+          <h1 className="text-5xl font-bold text-center mb-4">
+            Controle Inteligente de Equipamentos
           </h1>
-          <div className="flex justify-around gap-2">
+          <h2 className="text-gray-700 text-center mb-6">
+            Monitore os ativos de TI em um só lugar, com segurança e
+            praticidade.
+          </h2>
+          <div className="flex justify-around gap-4">
             <LoadingButton
               className="grow"
-              onClick={handleCadastrarClick}
+              onClick={() => navigateTo("/cadastro", "cadastrar")}
               label="Cadastrar"
-              loading={isLoading}
+              loading={loadingButton === "cadastrar"}
+              disabled={loadingButton === "pesquisar"}
             />
             <LoadingButton
               className="grow"
-              onClick={handlePesquisaClick}
+              onClick={() => navigateTo("/pesquisa", "pesquisar")}
               label="Pesquisar"
-              loading={isLoading}
+              loading={loadingButton === "pesquisar"}
+              disabled={loadingButton === "cadastrar"}
             />
           </div>
         </div>
       </div>
-    </main>  );
+    </main>
+  );
 }

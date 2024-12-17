@@ -2,30 +2,65 @@
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
 import { useRef, useState } from "react";
 import { DeviceCard } from "@/components/devices/DeviceCard";
 import { LoadingButton } from "@/components/buttons/LoadingButton";
+import { useToast } from "@/hooks/use-toast";
 
-export default function Home() {
+export default function SearchPage() {
   const searchRef = useRef(null);
   const [device, setDevice] = useState(null);
-
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   async function searchDevice() {
+    const patrimonio = searchRef.current.value.trim();
+
+    if (!patrimonio) {
+      toast({
+        title: "Campo vazio",
+        description: "Por favor, informe um número de série válido.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     setLoading(true);
-    const patrimonio = searchRef.current.value;
+    setDevice(null); // Reseta o card do dispositivo
 
-    const data = await fetch("/api/device/" + patrimonio);
-    const device = await data.json();
+    try {
+      const response = await fetch(`/api/device/${patrimonio}`);
 
-    setDevice(device);
-    setLoading(false);
+      if (response.status == 404) {
+        throw new Error("Dispositivo não encontrado");
+      }
+
+      const data = await response.json();
+
+      if (data.error || !data) {
+        toast({
+          title: "Dispositivo não encontrado",
+          description: "Nenhum dispositivo encontrado com o número informado.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      setDevice(data);
+    } catch (error) {
+      console.error("Erro ao buscar dispositivo:", error);
+      toast({
+        title: "Erro na busca",
+        description:
+          error.message || "Ocorreu um erro ao buscar o dispositivo.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-
     <main className="grid p-16 overflow-auto h-screen">
       <div className="flex flex-col gap-2 justify-center items-center">
         <h1 className="font-bold text-2xl">Pesquisa de Dispositivos</h1>

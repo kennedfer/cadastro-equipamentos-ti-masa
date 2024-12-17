@@ -8,9 +8,7 @@ export function RegisterDeviceForm({ onSubmit, loading }) {
   const type = watch("tipo");
 
   return (
-    <form onSubmit={handleSubmit(e => {
-      onSubmit(e, reset);
-      })} className="space-y-4 w-[600px]">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-[600px]">
       {/* Dados do Equipamento */}
       <div className="space-y-2">
         <h2 className="text-lg font-semibold text-gray-500">Dados do Equipamento</h2>

@@ -3,6 +3,8 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { Header } from "@/components/header/Header";
+import { Toaster } from "@/components/ui/toaster";
+import { usePathname } from "next/navigation";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -16,14 +18,20 @@ const geistMono = localFont({
 });
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+
+  // Condiciona a renderização do Header apenas quando não for a página Home
+  const shouldShowHeader = pathname !== "/";
+
   return (
     <html
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       lang="en"
     >
       <body>
-        <Header />
+        {shouldShowHeader && <Header />}
         {children}
+        <Toaster />
       </body>
     </html>
   );

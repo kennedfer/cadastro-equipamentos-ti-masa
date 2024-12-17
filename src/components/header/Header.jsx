@@ -1,18 +1,26 @@
-import { useState } from "react";
-import { Separator } from "../ui/separator";
-import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { LoadingButton } from "../buttons/LoadingButton";
 
 export function Header() {
   const router = useRouter();
+  const pathname = usePathname();
+  const [isLoading, setIsLoading] = useState(false);
 
-  function handleBackClick() {
+  async function handleBackClick() {
+    setIsLoading(true);
     router.push("/");
   }
 
+  useEffect(() => {
+    if (isLoading) {
+      setIsLoading(false);
+    }
+  }, [pathname]);
+
   return (
     <header className="fixed p-4 flex justify-between items-center">
-      <Button onClick={handleBackClick}>Voltar</Button>
+      <LoadingButton onClick={handleBackClick} label="Voltar" loading={isLoading} />
     </header>
   );
 }

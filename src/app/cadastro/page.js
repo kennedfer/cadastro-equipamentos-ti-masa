@@ -3,8 +3,6 @@
 import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState } from "react";
 
-import { Toaster } from "@/components/ui/toaster";
-
 import { RegisterDeviceForm } from "../../components/forms/RegisterDeviceForm";
 import { useRouter } from "next/navigation";
 import { prismaErrorMessages } from "@/components/forms/form.config";
@@ -15,7 +13,7 @@ export default function DeviceRegistrationPage() {
 
   const router = useRouter();
 
-  const onSubmit = async (data, resetForm) => {
+  const onSubmit = async (data) => {
     setLoading(true);
 
     try {
@@ -64,7 +62,7 @@ export default function DeviceRegistrationPage() {
         return router.push("/login");
       }
 
-      const { token } = localToken;
+      const { token } = JSON.parse(localToken);
 
       const res = await fetch("/api/auth/token", {
         method: "GET",
@@ -77,8 +75,13 @@ export default function DeviceRegistrationPage() {
       const tokenValidation = await res.json();
 
       if (tokenValidation.error) {
-        console.log(token, tokenValidation);
-        router.push("/login");
+        toast({
+          title: "Erro:",
+          description: "Você não está logado",
+          variant: "destructive"
+        });
+
+        return router.push("/login");
       }
     })();
   }, []);
@@ -91,7 +94,6 @@ export default function DeviceRegistrationPage() {
           <RegisterDeviceForm onSubmit={onSubmit} loading={loading} />
         </div>
       </main>
-      <Toaster />
     </>
   );
 }
