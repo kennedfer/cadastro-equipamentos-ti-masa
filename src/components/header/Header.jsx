@@ -19,7 +19,7 @@ export function Header() {
   }, [pathname]);
 
   return (
-    <header className="fixed p-4 flex justify-between items-center">
+    <header className="p-2 flex justify-between items-center">
       <LoadingButton onClick={handleBackClick} label="Voltar" loading={isLoading} />
     </header>
   );

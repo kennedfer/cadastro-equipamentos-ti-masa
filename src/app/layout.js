@@ -5,7 +5,7 @@ import "./globals.css";
 import { Header } from "@/components/header/Header";
 import { Toaster } from "@/components/ui/toaster";
 import { usePathname } from "next/navigation";
-import { Footer } from "./footer/Footer";
+import { Footer } from "../components/footer/Footer";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

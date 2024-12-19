@@ -61,17 +61,22 @@ export default function SearchPage() {
   }
 
   return (
-    <main className="grid p-16 overflow-auto h-screen">
-      <div className="flex flex-col gap-2 justify-center items-center">
-        <h1 className="font-bold text-2xl">Pesquisa de Dispositivos</h1>
+    <main className="grid p-4 sm:p-8 md:p-16 overflow-auto h-screen">
+      <div className="flex flex-col gap-4 justify-center items-center">
+        <h1 className="font-bold text-2xl sm:text-3xl md:text-4xl">
+          Pesquisa de Dispositivos
+        </h1>
+
         <Label htmlFor="busca">Número de Série para buscar:</Label>
+
         <Input
           ref={searchRef}
           placeholder="Ex.: 988213, 182123"
-          className="w-[300px]"
+          className="w-full sm:w-[300px]"
           id="busca"
           type="text"
         />
+
         <LoadingButton
           loading={loading}
           onClick={searchDevice}

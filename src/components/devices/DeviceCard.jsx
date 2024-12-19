@@ -20,7 +20,7 @@ export function DeviceCard({ device }) {
   } = device;
 
   return (
-    <Card className="space-y-4 w-[600px] p-4 border rounded-lg shadow-lg bg-white">
+    <Card className="space-y-4 w-full sm:w-[600px] p-4 border rounded-lg shadow-lg bg-white">
       {/* Dados do Equipamento */}
       <div className="space-y-2">
         <h3 className="font-semibold text-lg text-gray-900">Dados do Equipamento</h3>

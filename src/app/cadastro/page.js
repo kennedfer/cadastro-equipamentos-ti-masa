@@ -13,7 +13,7 @@ export default function DeviceRegistrationPage() {
 
   const router = useRouter();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async data => {
     setLoading(true);
 
     try {
@@ -55,8 +55,8 @@ export default function DeviceRegistrationPage() {
   };
 
   useEffect(() => {
-    (async function () {
-      const localToken = (localStorage.getItem("token"));
+    (async function() {
+      const localToken = localStorage.getItem("token");
 
       if (!localToken) {
         return router.push("/login");
@@ -87,13 +87,11 @@ export default function DeviceRegistrationPage() {
   }, []);
 
   return (
-    <>
-      <main className="">
-        <div className="flex flex-col items-center p-16">
-          <h1 className="font-bold text-2xl">Cadastro de Dispositivos</h1>
-          <RegisterDeviceForm onSubmit={onSubmit} loading={loading} />
-        </div>
-      </main>
-    </>
+    <main className="">
+      <div className="flex flex-col items-center p-4 lg:p-16">
+        <h1 className="font-bold text-2xl">Cadastro de Dispositivos</h1>
+        <RegisterDeviceForm onSubmit={onSubmit} loading={loading} />
+      </div>
+    </main>
   );
 }
