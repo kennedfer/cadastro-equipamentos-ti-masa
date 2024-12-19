@@ -48,11 +48,11 @@ export default function SearchPage() {
 
       setDevice(data);
     } catch (error) {
-      console.error("Erro ao buscar dispositivo:", error);
+      console.log(error.message);
+      // console.error("Erro ao buscar dispositivo:", error);
       toast({
         title: "Erro na busca",
-        description:
-          error.message || "Ocorreu um erro ao buscar o dispositivo.",
+        description: "Ocorreu um erro ao buscar o dispositivo. Verifique sua internet",
         variant: "destructive"
       });
     } finally {
